@@ -1,0 +1,45 @@
+services:
+  app.db.pdo:
+    class: \PDO
+    arguments:
+      - 'mysql:host=mysql,dbname=test'
+      - 'root'
+      - ''
+
+  app.controller.order:
+    class: \App\Controller\Order
+    arguments:
+      - '@app.service.order'
+      - '@app.service.payment'
+
+  app.controller.product:
+    class: \App\Controller\Product
+    arguments:
+      - '@app.service.product'
+
+  app.repository.order:
+    class: \App\Repository\Order
+    arguments:
+      - '@app.db.pdo'
+      - '@app.service.product'
+
+  app.repository.product:
+    class: \App\Repository\Product
+    arguments:
+      - '@app.db.pdo'
+
+  app.service.payment:
+    class: \App\Service\Payment
+    arguments:
+      - '@app.repository.order'
+      -
+  app.service.order:
+    class: \App\Service\Order
+    arguments:
+      - '@app.repository.order'
+      - '@app.service.product'
+
+  app.service.product:
+    class: \App\Service\Product
+    arguments:
+      - '@app.repository.product'
